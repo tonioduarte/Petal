@@ -38,6 +38,33 @@ header a {
     font-size: 14px;
 }
 
+.folhas-direita {
+    position: fixed;
+    top: 0;                 
+    right: 0;
+    height: 100vh;         
+    width: auto;            
+    object-fit:cover;      
+    pointer-events: none;
+    z-index: 3;
+}
+
+.folhas-esquerda {
+    position: fixed;
+    top: 0;                 
+    left: 0;
+    height: 100vh;         
+    width: auto;            
+    object-fit: cover;      
+    pointer-events: none;
+    z-index: 3;
+}
+
+.folhas-direita,
+.folhas-esquerda {
+    max-width: 500px;
+}
+
 .hero {
     width: 100%;
     height: 100vh;
@@ -211,6 +238,143 @@ header a {
 @keyframes effectNextThumb {
     from {
         transform: translateX(150px);
+    }
+}
+
+.borboleta {
+    position: absolute;
+
+    width: 150px !important;
+    height: auto !important;
+
+    object-fit: contain;
+
+    z-index: 20;
+
+    left: -200px;
+    top: 200px;
+
+    animation:
+        voarEntrando 5s ease-in-out forwards,
+        asas 0.5s ease-in-out infinite 5s;
+}
+
+/* ANIMAÇÃO */
+
+@keyframes voarEntrando {
+
+    0% {
+        left: 120%;
+        top: 0%;
+        transform: rotate(-20deg) scale(0.8);
+    }
+
+    25% {
+        top: 40%;
+        transform: rotate(15deg);
+    }
+
+    50% {
+        top: 25%;
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        top: 15%;
+        transform: rotate(8deg);
+    }
+
+    100% {
+        left: 67%;
+        top: 20%;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+@keyframes asas {
+
+    0% {
+        transform: scaleX(1);
+    }
+
+    50% {
+        transform: scaleX(0.92);
+    }
+
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+.borboleta2 {
+    position: absolute;
+
+    width: 150px !important;
+    height: auto !important;
+
+    object-fit: contain;
+
+    z-index: 20;
+
+    animation:
+        voarBorboleta2 6s ease-in-out forwards,
+        asas2 0.6s ease-in-out infinite 6s;
+}
+
+@keyframes voarBorboleta2 {
+
+    0% {
+        left: -200px;
+        top: 60%;
+
+        transform:
+            rotate(-30deg)
+            scale(0.8);
+    }
+
+    25% {
+        top: 15%;
+
+        transform:
+            rotate(10deg);
+    }
+
+    50% {
+        top: 35%;
+
+        transform:
+            rotate(-8deg);
+    }
+
+    75% {
+        top: 55%;
+
+        transform:
+            rotate(5deg);
+    }
+
+    100% {
+        left: 24%;
+        top: 55%;
+
+        transform:
+            rotate(0deg)
+            scale(1);
+    }
+}
+
+@keyframes asas2 {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.93);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }
 
