@@ -135,14 +135,15 @@ header a:hover {
     z-index: 20;
 }
 
-.folhinhas-baixo {
+.folhinhas-top-slider {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 90vh;
+    top: -50px;         
     width: 600px;
     height: auto;
-    z-index: 20;
+    z-index: 5;          
+    pointer-events: none;
 }
 
 .container {
@@ -500,7 +501,7 @@ header a:hover {
 
 .informacoes {
     width: 100%;
-    padding: 150px 10%;
+    padding: 60px 10% 40px;  
     color: #603314;
     position: relative;
     z-index: 1;
@@ -509,13 +510,22 @@ header a:hover {
     align-items: center;
 }
 
+
 .informacoes h2 {
-    font-size: 4em;
-    margin-bottom: 30px;
+    margin-top: 0;           
+    font-size: 3em;         
+    margin-bottom: 20px;
 }
 
 .informacoes p {
-    font-size: 1.3em;
+    font-size: 1.2em;
     line-height: 1.8em;
     max-width: 800px;
+    margin-bottom: 24px; 
+}
+
+.logo-img-info {
+    height: 90px;        
+    width: auto;
+    object-fit: contain;
 }
