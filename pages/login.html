@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="../assets/img/Petal-logo-bege.png" type="image/png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/login.css">
+
+    <title>Login • Petal</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="cadastro.html">Cadastre-se</a>
+            <a href="login.html">Login</a>
+        </nav>
+
+        <div class="logo-header">
+            <img src="../assets/img/Petal-logo-bege.png" alt="logo" class="logo-img">
+            <img src="../assets/img/Petal-nome-bege.png" alt="Petal" class="logo-text">
+        </div>
+    </header>
+
+    <img src="../assets/img/folhas-dir.png" alt="" class="folhas-direita" />
+    <img src="../assets/img/folhas-esq.png" alt="" class="folhas-esquerda" />
+
+    <main class="login-container">
+        <section class="login-box">
+            <div class="login-content">
+                <h1>Bem-vindo(a) de volta 🌿</h1>
+                <p class="login-subtitle">
+                    Acesse sua conta e continue compartilhando sua arte com o mundo.
+                </p>
+
+                <form class="login-form" action="#" method="post">
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" id="senha" name="senha" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="form-links">
+                        <a href="#" class="link-menor">Esqueci minha senha</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">Entrar</button>
+
+                    <p class="login-footer">
+                        Ainda não tem uma conta?
+                        <a href="cadastro.html" class="link-destaque">Cadastre-se</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <section class="login-image">
+            <div class="overlay"></div>
+            <img src="../assets/img/login-art.jpg" alt="Arte de fundo - Petal">
+        </section>
+    </main>
+
+</body>
+
+</html>

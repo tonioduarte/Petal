@@ -166,12 +166,29 @@ header a:hover {
 
 .item-list .content {
     position: absolute;
-    top: 20%;
-    right: 10%;
-    padding-right: 30%;
-    width: 80%;
+    top: 10%;
+    left: 8%;
+    max-width: 420px;             
+    padding: 18px 22px;           
+
+    background-color: rgba(96, 51, 20, 0.78);
+    border-radius: 18px;
     color: #eee;
-    text-shadow: 0 5px 10px #0004;
+    text-shadow: 0 2px 6px #0006;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.container .list .item-list:last-child .content {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: showCard 0.5s ease-out forwards;
+}
+
+@keyframes showCard {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .item-list .content .title {
@@ -528,4 +545,151 @@ header a:hover {
     height: 90px;        
     width: auto;
     object-fit: contain;
+}
+
+@media (max-width: 768px) {
+
+    body {
+        font-size: 10px;
+        overflow-x: hidden;
+    }
+
+    header {
+        padding: 0 16px;
+        height: 56px;
+    }
+
+    header a {
+        margin-right: 16px;
+        font-size: 12px;
+    }
+
+    .logo-img,
+    .logo-text {
+        height: 36px;
+    }
+
+    .folhas-direita,
+    .folhas-esquerda {
+        height: 100vh;
+        max-width: 220px;
+        opacity: 0.7;
+    }
+
+    .hero {
+        height: 70vh;
+    }
+
+    .hero img {
+        object-fit: cover;
+    }
+
+    .hero-content {
+        left: 50%;
+        bottom: 12%;
+        transform: translate(-50%, 0);
+    }
+
+    .hero-content button {
+        width: 150px;
+        height: 44px;
+        font-size: 11px;
+    }
+
+    .borboleta,
+    .borboleta2 {
+        width: 90px !important;
+    }
+
+    .folhinhas,
+    .folhinhas-top-slider,
+    .folhinhas-baixo {
+        width: 280px;
+    }
+
+    .informacoes {
+        padding: 40px 24px 32px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .informacoes h2 {
+        font-size: 2.1em;
+        margin-top: 0;
+        margin-bottom: 16px;
+    }
+
+    .informacoes p {
+        font-size: 1.1em;
+        margin-bottom: 18px;
+        max-width: 100%;
+    }
+
+    .logo-img-info {
+        height: 70px;
+        margin: 8px 0 12px;
+    }
+
+    .container {
+        height: auto;
+        min-height: 70vh;
+    }
+
+    .item-list img {
+        object-fit: cover;
+    }
+
+    .item-list .content {
+        position: absolute;
+        left: 50%;
+        top: auto;
+        bottom: 8%;
+        transform: translateX(-50%);
+        max-width: 85%;
+        padding: 16px 18px;
+        border-radius: 14px;
+    }
+
+    .item-list .content .title {
+        font-size: 2.2em;
+    }
+
+    .item-list .content .description {
+        font-size: 1em;
+    }
+
+    .item-list .content .buttons {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, 40px);
+        width: 100%;
+    }
+
+    .item-list .content .buttons button {
+        font-size: 0.85em;
+    }
+
+    .thumb {
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        gap: 10px;
+    }
+
+    .thumb-item {
+        width: 90px;
+        height: 135px;
+    }
+
+    .arrows {
+        bottom: 50%;
+        left: 10px;
+        transform: translateY(50%);
+        gap: 10px;
+        width: auto;
+    }
+
+    .arrows button {
+        width: 32px;
+        height: 32px;
+    }
 }
