@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="../assets/img/Petal-logo-bege.png" type="image/png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/cadastro.css">
+
+    <title>Cadastro • Petal</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="cadastro.html">Cadastre-se</a>
+            <a href="login.html">Login</a>
+        </nav>
+
+        <div class="logo-header">
+            <img src="../assets/img/Petal-logo-bege.png" alt="logo" class="logo-img">
+            <img src="../assets/img/Petal-nome-bege.png" alt="Petal" class="logo-text">
+        </div>
+    </header>
+
+    <img src="../assets/img/folhas-dir.png" alt="" class="folhas-direita" />
+    <img src="../assets/img/folhas-esq.png" alt="" class="folhas-esquerda" />
+
+    <main class="cadastro-container">
+        <section class="cadastro-box">
+            <div class="cadastro-content">
+                <h1>Crie sua conta no Petal 🌿</h1>
+                <p class="cadastro-subtitle">
+                    Comece a guardar e compartilhar suas artes em um só lugar.
+                </p>
+
+                <form class="cadastro-form" action="#" method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome completo</label>
+                            <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="usuario">Nome de usuário</label>
+                            <input type="text" id="usuario" name="usuario" placeholder="@seudominio" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="senha">Senha</label>
+                            <input type="password" id="senha" name="senha" placeholder="Crie uma senha" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmar-senha">Confirmar senha</label>
+                            <input type="password" id="confirmar-senha" name="confirmar_senha" placeholder="Repita a senha" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipo-artista">Você é...</label>
+                        <select id="tipo-artista" name="tipo_artista">
+                            <option value="">Selecione uma opção</option>
+                            <option value="ilustrador">Ilustrador(a)</option>
+                            <option value="fotografo">Fotógrafo(a)</option>
+                            <option value="pintor">Pintor(a)</option>
+                            <option value="escultor">Escultor(a)</option>
+                            <option value="designer">Designer</option>
+                            <option value="multimidia">Artista multimídia</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" name="bio" rows="3" placeholder="Fale um pouco sobre você e sua arte"></textarea>
+                    </div>
+
+                    <div class="form-termos">
+                        <label class="checkbox-line">
+                            <input type="checkbox" name="termos" required>
+                            <span>Eu aceito os termos de uso e a política de privacidade do Petal.</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-cadastro">Criar conta</button>
+
+                    <p class="cadastro-footer">
+                        Já tem uma conta?
+                        <a href="login.html" class="link-destaque">Entrar</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <section class="cadastro-image">
+            <div class="overlay"></div>
+            <img src="../assets/img/cadastro.jpg" alt="Arte de fundo - Petal">
+        </section>
+    </main>
+
+</body>
+
+</html>
