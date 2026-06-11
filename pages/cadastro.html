@@ -42,7 +42,7 @@
                     Comece a guardar e compartilhar suas artes em um só lugar.
                 </p>
 
-                <form class="cadastro-form" action="#" method="post">
+                <form class="cadastro-form" action="#" method="post" id="cadastroForm">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nome">Nome completo</label>
@@ -115,5 +115,54 @@
     </main>
 
 </body>
+
+<script>
+document.getElementById('cadastroForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const nome = document.getElementById('nome').value.trim();
+    const usuario = document.getElementById('usuario').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const senha = document.getElementById('senha').value;
+    const confirmarSenha = document.getElementById('confirmar-senha').value;
+    const tipo_artista = document.getElementById('tipo-artista').value;
+    const bio = document.getElementById('bio').value;
+
+    if (senha !== confirmarSenha) {
+        alert('As senhas não coincidem.');
+        return;
+    }
+
+    try {
+        const resposta = await fetch('http://localhost:3000/api/cadastro', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', 
+            body: JSON.stringify({
+                nome,
+                usuario,
+                email,
+                senha,
+                tipo_artista,
+                bio
+            })
+        });
+
+        const data = await resposta.json();
+
+        if (!resposta.ok) {
+            alert(data.erro || 'Erro ao cadastrar.');
+            return;
+        }
+
+        window.location.href = 'perfil.html';
+    } catch (err) {
+        console.error(err);
+        alert('Erro de conexão com o servidor.');
+    }
+});
+</script>
 
 </html>

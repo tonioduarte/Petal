@@ -1,0 +1,379 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #fff6ea;
+    color: #603314;
+    font-size: 12px;
+    overflow-x: hidden;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    padding: 0 40px;
+    z-index: 100;
+    background-color: #603314;
+}
+
+header a {
+    color: #eee;
+    font-weight: 300;
+    margin-right: 40px;
+    font-size: 14px;
+}
+
+header a:hover {
+    color: #7A9445;
+    border-bottom: 1px solid #7A9445;
+    transition: 0.3s;
+}
+
+.logo-header {
+    display: flex;
+    align-items: center;
+    z-index: 200;
+}
+
+.logo-img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-text {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+.folhas-direita {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: auto;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.folhas-esquerda {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: auto;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.folhas-direita,
+.folhas-esquerda {
+    max-width: 500px;
+}
+
+.perfil-container {
+    position: relative;
+    z-index: 5;
+    margin-top: 60px;
+    padding-bottom: 40px;
+}
+
+.perfil-topo {
+    max-width: 1080px;
+    margin: 24px auto 0;
+    background-color: rgba(255, 246, 234, 0.96);
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.perfil-capa {
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+}
+
+.perfil-capa img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.capa-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), transparent);
+}
+
+.perfil-info {
+    display: flex;
+    gap: 24px;
+    padding: 18px 24px 16px;
+    position: relative;
+}
+
+.perfil-avatar-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -60px;
+    min-width: 140px;
+}
+
+.perfil-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #fff6ea;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+    background-color: #603314;
+}
+
+.perfil-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btn-editar-perfil {
+    margin-top: 10px;
+    padding: 7px 18px;
+    border-radius: 999px;
+    border: 1px solid #603314;
+    background-color: #fff6ea;
+    color: #603314;
+    font-size: 0.85em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-editar-perfil:hover {
+    background-color: #603314;
+    color: #fff6ea;
+}
+
+.perfil-textos {
+    flex: 1;
+}
+
+.perfil-nome {
+    font-size: 1.7em;
+    margin-bottom: 2px;
+}
+
+.perfil-usuario {
+    font-size: 0.95em;
+    color: #8a5a35;
+    margin-bottom: 8px;
+}
+
+.perfil-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.perfil-stats strong {
+    font-weight: 600;
+}
+
+.perfil-bio {
+    font-size: 0.92em;
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+
+.perfil-info-extra {
+    font-size: 0.85em;
+    color: #8a5a35;
+}
+
+.perfil-abas {
+    display: flex;
+    gap: 4px;
+    padding: 8px 18px 10px;
+    border-top: 1px solid rgba(96, 51, 20, 0.12);
+}
+
+.aba-btn {
+    border: none;
+    background-color: transparent;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.9em;
+    color: #8a5a35;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.aba-btn:hover {
+    background-color: rgba(96, 51, 20, 0.08);
+}
+
+.aba-btn.ativa {
+    background-color: #603314;
+    color: #fff6ea;
+}
+
+.perfil-conteudo {
+    max-width: 1080px;
+    margin: 16px auto 0;
+    padding: 0 4px;
+}
+
+.grid-artes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.arte-card {
+    background-color: rgba(255, 246, 234, 0.98);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.arte-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.16);
+}
+
+.arte-thumb {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.arte-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.arte-info {
+    padding: 10px 12px 12px;
+}
+
+.arte-info h3 {
+    font-size: 0.98em;
+    margin-bottom: 2px;
+}
+
+.arte-info p {
+    font-size: 0.8em;
+    color: #8a5a35;
+}
+
+@media (max-width: 960px) {
+    .perfil-topo {
+        margin: 16px 16px 0;
+    }
+
+    .perfil-conteudo {
+        margin: 10px 16px 0;
+    }
+
+    .perfil-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .perfil-avatar-area {
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 16px;
+        margin-top: -50px;
+    }
+
+    .btn-editar-perfil {
+        margin-top: 0;
+    }
+
+    .grid-artes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    header {
+        padding: 0 16px;
+        height: 56px;
+    }
+
+    header a {
+        margin-right: 16px;
+        font-size: 12px;
+    }
+
+    .logo-img,
+    .logo-text {
+        height: 36px;
+    }
+
+    .perfil-topo {
+        margin: 12px 10px 0;
+        border-radius: 18px;
+    }
+
+    .perfil-capa {
+        height: 150px;
+    }
+
+    .perfil-info {
+        padding: 14px 14px 12px;
+    }
+
+    .perfil-avatar {
+        width: 96px;
+        height: 96px;
+    }
+
+    .perfil-nome {
+        font-size: 1.4em;
+    }
+
+    .perfil-bio {
+        font-size: 0.88em;
+    }
+
+    .perfil-info-extra {
+        font-size: 0.8em;
+    }
+
+    .perfil-abas {
+        padding-inline: 10px;
+    }
+
+    .grid-artes {
+        grid-template-columns: 1fr;
+    }
+
+    .arte-thumb {
+        height: 190px;
+    }
+}

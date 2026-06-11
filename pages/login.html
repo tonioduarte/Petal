@@ -42,7 +42,7 @@
                     Acesse sua conta e continue compartilhando sua arte com o mundo.
                 </p>
 
-                <form class="login-form" action="#" method="post">
+                <form class="login-form" action="#" method="post" id="loginForm">
                     <div class="form-group">
                         <label for="email">E-mail</label>
                         <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
@@ -57,7 +57,9 @@
                         <a href="#" class="link-menor">Esqueci minha senha</a>
                     </div>
 
-                    <button type="submit" class="btn-login">Entrar</button>
+                    <a href="perfil.html">
+                        <button type="button" class="btn-login">Entrar</button>
+                    </a>
 
                     <p class="login-footer">
                         Ainda não tem uma conta?
@@ -74,5 +76,37 @@
     </main>
 
 </body>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const emailOuUsuario = document.getElementById('emailOuUsuario').value.trim();
+    const senha = document.getElementById('senha').value;
+
+    try {
+        const resposta = await fetch('http://localhost:3000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ emailOuUsuario, senha })
+        });
+
+        const data = await resposta.json();
+
+        if (!resposta.ok) {
+            alert(data.erro || 'Erro ao fazer login.');
+            return;
+        }
+
+        window.location.href = 'perfil.html';
+    } catch (err) {
+        console.error(err);
+        alert('Erro de conexão com o servidor.');
+    }
+});
+</script>
 
 </html>

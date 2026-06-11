@@ -1,12 +1,189 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="./perfil.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="../assets/img/Petal-logo-bege.png" type="image/png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/perfil.css">
+
+    <title>Perfil • Petal</title>
 </head>
+
 <body>
-    
+    <header>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="#">Explorar</a>
+            <a href="perfil.html">Meu perfil</a>
+            <a href="#" id="btnLogout">Sair</a>
+        </nav>
+
+        <div class="logo-header">
+            <img src="../assets/img/Petal-logo-bege.png" alt="logo" class="logo-img">
+            <img src="../assets/img/Petal-nome-bege.png" alt="Petal" class="logo-text">
+        </div>
+    </header>
+
+    <img src="../assets/img/folhas-dir.png" alt="" class="folhas-direita" />
+    <img src="../assets/img/folhas-esq.png" alt="" class="folhas-esquerda" />
+
+    <main class="perfil-container">
+        <section class="perfil-topo">
+            <div class="perfil-capa">
+                <img src="../assets/img/perfil-capa.jpg" alt="Capa do artista">
+                <div class="capa-overlay"></div>
+            </div>
+
+            <div class="perfil-info">
+                <div class="perfil-avatar-area">
+                    <div class="perfil-avatar">
+                        <img src="../assets/img/perfil-avatar.jpg" alt="Foto do artista">
+                    </div>
+                    <button class="btn-editar-perfil">Editar perfil</button>
+                </div>
+
+                <div class="perfil-textos">
+                    <h1 class="perfil-nome">Nome do Artista</h1>
+                    <p class="perfil-usuario">@nomeartista</p>
+
+                    <div class="perfil-stats">
+                        <span><strong>24</strong> artes</span>
+                        <span><strong>312</strong> seguidores</span>
+                        <span><strong>180</strong> seguindo</span>
+                    </div>
+
+                    <p class="perfil-bio">
+                        Ilustrador(a) e amante de cores suaves. Explorando universos delicados e naturais
+                        através da arte digital e tradicional. 🌿✨
+                    </p>
+
+                    <p class="perfil-info-extra">
+                        📍 São Paulo, Brasil · 🎨 Ilustração & Aquarela · ✉️ contato@petalart.com
+                    </p>
+                </div>
+            </div>
+
+            <div class="perfil-abas">
+                <button class="aba-btn ativa">Artes</button>
+                <button class="aba-btn">Coleções</button>
+                <button class="aba-btn">Sobre</button>
+            </div>
+        </section>
+
+        <section class="perfil-conteudo">
+            <div class="grid-artes">
+                <article class="arte-card">
+                    <div class="arte-thumb">
+                        <img src="../assets/img/gato.png" alt="Arte 1">
+                    </div>
+                    <div class="arte-info">
+                        <h3>Entre Folhas</h3>
+                        <p>Ilustração digital · 2024</p>
+                    </div>
+                </article>
+
+                <article class="arte-card">
+                    <div class="arte-thumb">
+                        <img src="../assets/img/crochet.png" alt="Arte 2">
+                    </div>
+                    <div class="arte-info">
+                        <h3>Texturas do Tempo</h3>
+                        <p>Fotografia · 2023</p>
+                    </div>
+                </article>
+
+                <article class="arte-card">
+                    <div class="arte-thumb">
+                        <img src="../assets/img/pintura.png" alt="Arte 3">
+                    </div>
+                    <div class="arte-info">
+                        <h3>Luz Sobre a Tela</h3>
+                        <p>Pintura em tela · 2023</p>
+                    </div>
+                </article>
+
+                <article class="arte-card">
+                    <div class="arte-thumb">
+                        <img src="../assets/img/filme.png" alt="Arte 4">
+                    </div>
+                    <div class="arte-info">
+                        <h3>Frames de Memória</h3>
+                        <p>Filme analógico · 2022</p>
+                    </div>
+                </article>
+
+                <article class="arte-card">
+                    <div class="arte-thumb">
+                        <img src="../assets/img/gato-box.png" alt="Arte 5">
+                    </div>
+                    <div class="arte-info">
+                        <h3>No Jardim</h3>
+                        <p>Estudo de personagem · 2024</p>
+                    </div>
+                </article>
+
+                <article class="arte-card">
+                    <div class="arte-thumb">
+                        <img src="../assets/img/pintura-box.jpg" alt="Arte 6">
+                    </div>
+                    <div class="arte-info">
+                        <h3>Horizontes</h3>
+                        <p>Pintura digital · 2024</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
 </body>
+
+<script>
+async function carregarPerfil() {
+    try {
+        const resposta = await fetch('http://localhost:3000/api/me', {
+            credentials: 'include'
+        });
+
+        if (resposta.status === 401) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const usuario = await resposta.json();
+
+        document.querySelector('.perfil-nome').textContent = usuario.nome;
+        document.querySelector('.perfil-usuario').textContent = '@' + usuario.usuario;
+        if (usuario.bio) {
+            document.querySelector('.perfil-bio').textContent = usuario.bio;
+        }
+        // aqui você pode preencher outras infos (cidade, site, etc.)
+    } catch (err) {
+        console.error(err);
+        alert('Erro ao carregar perfil.');
+        window.location.href = 'login.html';
+    }
+}
+
+carregarPerfil();
+</script>
+
+<script>
+document.getElementById('btnLogout').addEventListener('click', async function (e) {
+    e.preventDefault();
+    await fetch('http://localhost:3000/api/logout', {
+        method: 'POST',
+        credentials: 'include'
+    });
+    window.location.href = 'login.html';
+});
+</script>
+
 </html>
