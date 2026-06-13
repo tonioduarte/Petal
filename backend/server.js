@@ -9,24 +9,35 @@ const path = require('path');
 const app = express();
 const knex = Knex(knexConfig);
 
+app.set('trust proxy', 1);
+
 app.use(cors({
-    origin: ['http://localhost:5500', 'http://127.0.0.1:5500'],
-    credentials: true
+    origin: ['http://127.0.0.1:5500', 'http://localhost:5500'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '..')));
 
 app.use(session({
+  name: 'petal_session',
   secret: 'petal-segredinho-bem-guardado',
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   cookie: {
-    httpOnly: true
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
 function precisaEstarLogado(req, res, next) {
+  console.log("-> Verificando sessão. ID do Usuário ativo:", req.session.userId);
+  
   if (!req.session.userId) {
     return res.status(401).json({ erro: 'Não autenticado' });
   }
@@ -39,7 +50,7 @@ app.get('/', (req, res) => {
 
 app.post('/api/cadastro', async (req, res) => {
   try {
-    const { nome, usuario, email, senha, tipo_artista, bio } = req.body;
+    const { nome, usuario, email, parseInt, senha, tipo_artista, bio } = req.body;
 
     if (!nome || !usuario || !email || !senha) {
       return res.status(400).json({ erro: 'Campos obrigatórios ausentes.' });
@@ -154,7 +165,7 @@ app.get('/api/me', precisaEstarLogado, async (req, res) => {
 
 app.post('/api/logout', (req, res) => {
   req.session.destroy(() => {
-    res.clearCookie('connect.sid');
+    res.clearCookie('petal_session');
     res.json({ ok: true });
   });
 });
