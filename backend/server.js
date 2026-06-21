@@ -18,8 +18,8 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(path.join(__dirname, '..')));
 
 app.use(session({
@@ -155,7 +155,10 @@ app.get('/api/me', precisaEstarLogado, async (req, res) => {
       tipo_artista: usuario.tipo_artista,
       bio: usuario.bio,
       localizacao: usuario.localizacao,
-      site: usuario.site
+      site: usuario.site,
+      foto: usuario.foto || null,
+      capa: usuario.capa || null,
+      atividades: usuario.atividades ? JSON.parse(usuario.atividades) : []
     });
   } catch (err) {
     console.error(err);
@@ -163,14 +166,57 @@ app.get('/api/me', precisaEstarLogado, async (req, res) => {
   }
 });
 
-app.post('/api/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.clearCookie('petal_session');
+app.put('/api/me', precisaEstarLogado, async (req, res) => {
+  try {
+    const { nome, bio, atividades, foto, capa, usuario } = req.body;
+
+    if (!nome || nome.trim() === '') {
+      return res.status(400).json({ erro: 'O nome não pode ficar vazio.' });
+    }
+
+    const dadosParaAtualizar = {
+      nome: nome.trim(),
+      bio: bio ? bio.trim() : null,
+      atividades: atividades ? JSON.stringify(atividades) : null,
+    };
+
+    if (foto !== undefined) dadosParaAtualizar.foto = foto;
+    if (capa !== undefined) dadosParaAtualizar.capa = capa;
+
+    if (usuario) {
+      const usuarioLimpo = usuario.trim().replace(/@+/, '');
+
+      if (usuarioLimpo.length < 3) {
+        return res.status(400).json({ erro: 'O @ deve ter pelo menos 3 caracteres.' });
+      }
+
+      const existe = await knex('usuarios')
+        .where({ usuario: usuarioLimpo })
+        .whereNot({ id: req.session.userId })
+        .first();
+
+      if (existe) {
+        return res.status(400).json({ erro: 'Esse @ já está em uso.' });
+      }
+
+      dadosParaAtualizar.usuario = usuarioLimpo;
+    }
+
+    await knex('usuarios')
+      .where({ id: req.session.userId })
+      .update(dadosParaAtualizar);
+
     res.json({ ok: true });
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao atualizar perfil.' });
+  }
 });
 
-const PORT = 3000;
+
+
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`✨ Servidor Petal rodando em http://localhost:${PORT}`);
 });

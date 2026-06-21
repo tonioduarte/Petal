@@ -11,15 +11,283 @@
       href="../assets/img/Petal-logo-bege.png"
       type="image/png"
     />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="../css/perfil.css" />
 
     <title>Perfil • Petal</title>
+
+    <style>
+  
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.aberto {
+        display: flex;
+      }
+      .modal {
+        background: #fff6ea;
+        border-radius: 20px;
+        padding: 32px 28px 24px;
+        width: 100%;
+        max-width: 480px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        position: relative;
+        animation: modalEntrar 0.25s ease;
+      }
+      @keyframes modalEntrar {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal h2 {
+        font-size: 1.2em;
+        margin-bottom: 22px;
+        color: #603314;
+      }
+
+      .modal-fechar {
+        position: absolute;
+        top: 14px;
+        right: 18px;
+        background: none;
+        border: none;
+        font-size: 1.4em;
+        cursor: pointer;
+        color: #8a5a35;
+        line-height: 1;
+        transition: color 0.2s;
+      }
+      .modal-fechar:hover {
+        color: #603314;
+      }
+
+      .modal-avatar-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 22px;
+        gap: 10px;
+      }
+      .modal-avatar-preview {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #603314;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      }
+      .btn-trocar-foto {
+        font-size: 0.8em;
+        color: #603314;
+        background: none;
+        border: 1px solid #603314;
+        border-radius: 999px;
+        padding: 5px 14px;
+        cursor: pointer;
+        transition: 0.25s;
+        font-family: "Poppins", sans-serif;
+      }
+      .btn-trocar-foto:hover {
+        background: #603314;
+        color: #fff6ea;
+      }
+      #inputFoto {
+        display: none;
+      }
+
+      .modal-campo {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 16px;
+      }
+      .modal-campo label {
+        font-size: 0.82em;
+        font-weight: 500;
+        color: #603314;
+      }
+      .modal-campo input,
+      .modal-campo textarea {
+        padding: 9px 13px;
+        border-radius: 10px;
+        border: 1.5px solid rgba(96, 51, 20, 0.25);
+        background: #fff;
+        color: #603314;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.9em;
+        transition: border 0.2s;
+        resize: none;
+      }
+      .modal-campo input:focus,
+      .modal-campo textarea:focus {
+        outline: none;
+        border-color: #603314;
+      }
+
+      .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-bottom: 8px;
+      }
+      .tag {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: #603314;
+        color: #fff6ea;
+        border-radius: 999px;
+        padding: 4px 12px;
+        font-size: 0.8em;
+      }
+      .tag button {
+        background: none;
+        border: none;
+        color: #fff6ea;
+        cursor: pointer;
+        font-size: 0.95em;
+        line-height: 1;
+        padding: 0;
+        opacity: 0.75;
+        transition: opacity 0.2s;
+      }
+      .tag button:hover {
+        opacity: 1;
+      }
+
+      .tags-input-row {
+        display: flex;
+        gap: 8px;
+      }
+      .tags-input-row input {
+        flex: 1;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1.5px solid rgba(96, 51, 20, 0.25);
+        background: #fff;
+        color: #603314;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.87em;
+        transition: border 0.2s;
+      }
+      .tags-input-row input:focus {
+        outline: none;
+        border-color: #603314;
+      }
+      .btn-add-tag {
+        padding: 8px 14px;
+        border-radius: 10px;
+        border: none;
+        background: #603314;
+        color: #fff6ea;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.85em;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .btn-add-tag:hover {
+        opacity: 0.85;
+      }
+
+      .modal-acoes {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 24px;
+      }
+      .btn-cancelar {
+        padding: 9px 20px;
+        border-radius: 999px;
+        border: 1px solid #603314;
+        background: transparent;
+        color: #603314;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.88em;
+        cursor: pointer;
+        transition: 0.25s;
+      }
+      .btn-cancelar:hover {
+        background: rgba(96, 51, 20, 0.08);
+      }
+      .btn-salvar {
+        padding: 9px 22px;
+        border-radius: 999px;
+        border: none;
+        background: #603314;
+        color: #fff6ea;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.88em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .btn-salvar:hover {
+        opacity: 0.85;
+      }
+      .btn-salvar:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .modal-feedback {
+        text-align: center;
+        font-size: 0.82em;
+        margin-top: 10px;
+        min-height: 18px;
+        color: #7a9445;
+      }
+      .modal-feedback.erro {
+        color: #c0392b;
+      }
+      .modal-capa-area {
+        position: relative;
+        width: 100%;
+        height: 90px;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 18px;
+        cursor: pointer;
+      }
+      .modal-capa-area img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .btn-trocar-capa {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        color: #fff;
+        border: none;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.82em;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-trocar-capa:hover {
+        background: rgba(0, 0, 0, 0.55);
+      }
+      #inputCapa {
+        display: none;
+      }
+    </style>
   </head>
 
   <body>
@@ -30,7 +298,6 @@
         <a href="perfil.html">Meu perfil</a>
         <a href="#" id="btnLogout">Sair</a>
       </nav>
-
       <div class="logo-header">
         <img
           src="../assets/img/Petal-logo-bege.png"
@@ -59,11 +326,14 @@
           <div class="perfil-avatar-area">
             <div class="perfil-avatar">
               <img
+                id="avatarPrincipal"
                 src="../assets/img/perfil-avatar.jpg"
                 alt="Foto do artista"
               />
             </div>
-            <button class="btn-editar-perfil">Editar perfil</button>
+            <button class="btn-editar-perfil" id="btnAbrirModal">
+              Editar perfil
+            </button>
           </div>
 
           <div class="perfil-textos">
@@ -81,7 +351,7 @@
               delicados e naturais através da arte digital e tradicional. 🌿✨
             </p>
 
-            <p class="perfil-info-extra">
+            <p class="perfil-info-extra" id="perfilAtividades">
               📍 São Paulo, Brasil · 🎨 Ilustração & Aquarela · ✉️
               contato@petalart.com
             </p>
@@ -106,7 +376,6 @@
               <p>Ilustração digital · 2024</p>
             </div>
           </article>
-
           <article class="arte-card">
             <div class="arte-thumb">
               <img src="../assets/img/crochet.png" alt="Arte 2" />
@@ -116,7 +385,6 @@
               <p>Fotografia · 2023</p>
             </div>
           </article>
-
           <article class="arte-card">
             <div class="arte-thumb">
               <img src="../assets/img/pintura.png" alt="Arte 3" />
@@ -126,7 +394,6 @@
               <p>Pintura em tela · 2023</p>
             </div>
           </article>
-
           <article class="arte-card">
             <div class="arte-thumb">
               <img src="../assets/img/filme.png" alt="Arte 4" />
@@ -136,7 +403,6 @@
               <p>Filme analógico · 2022</p>
             </div>
           </article>
-
           <article class="arte-card">
             <div class="arte-thumb">
               <img src="../assets/img/gato-box.png" alt="Arte 5" />
@@ -146,7 +412,6 @@
               <p>Estudo de personagem · 2024</p>
             </div>
           </article>
-
           <article class="arte-card">
             <div class="arte-thumb">
               <img src="../assets/img/pintura-box.jpg" alt="Arte 6" />
@@ -159,47 +424,319 @@
         </div>
       </section>
     </main>
-  </body>
 
-  <script>
-    async function carregarPerfil() {
-      try {
-        console.log("Tentando buscar dados do usuário logado...");
-        const resposta = await fetch("http://localhost:3000/api/me", {
-          method: "GET",
-          credentials: "include", // CRUCIAL: envia os cookies para o backend
+    <div class="modal-overlay" id="modalOverlay">
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitulo"
+      >
+        <button class="modal-fechar" id="btnFecharModal" aria-label="Fechar">
+          ✕
+        </button>
+        <h2 id="modalTitulo">Editar perfil</h2>
+
+        <div class="modal-capa-area" id="modalCapaArea">
+          <img
+            id="modalCapaImg"
+            src="../assets/img/perfil-capa.jpg"
+            alt="Capa"
+          />
+          <button class="btn-trocar-capa" id="btnTrocarCapa">
+            📷 Trocar capa
+          </button>
+        </div>
+        <input type="file" id="inputCapa" accept="image/*" />
+
+        <div class="modal-avatar-area">
+          <img
+            id="modalAvatarPreview"
+            class="modal-avatar-preview"
+            src="../assets/img/perfil-avatar.jpg"
+            alt="Preview"
+          />
+          <button class="btn-trocar-foto" id="btnTrocarFoto">
+            Trocar foto
+          </button>
+          <input type="file" id="inputFoto" accept="image/*" />
+        </div>
+
+        <div class="modal-campo">
+          <label for="inputNome">Nome</label>
+          <input
+            type="text"
+            id="inputNome"
+            placeholder="Seu nome"
+            maxlength="60"
+          />
+        </div>
+
+        <div class="modal-campo">
+          <label for="inputUsuario">@</label>
+          <input
+            type="text"
+            id="inputUsuario"
+            placeholder="seuarroba"
+            maxlength="30"
+          />
+        </div>
+
+        <div class="modal-campo">
+          <label for="inputBio">Bio</label>
+          <textarea
+            id="inputBio"
+            rows="3"
+            placeholder="Conte um pouco sobre você..."
+            maxlength="200"
+          ></textarea>
+        </div>
+
+        <div class="modal-campo">
+          <label>Atividades</label>
+          <div class="tags-container" id="tagsContainer"></div>
+          <div class="tags-input-row">
+            <input
+              type="text"
+              id="inputTag"
+              placeholder="Ex: Crochê, Pintura..."
+              maxlength="30"
+            />
+            <button class="btn-add-tag" id="btnAddTag">+ Adicionar</button>
+          </div>
+        </div>
+
+        <div class="modal-acoes">
+          <button class="btn-cancelar" id="btnCancelar">Cancelar</button>
+          <button class="btn-salvar" id="btnSalvar">Salvar</button>
+        </div>
+
+        <p class="modal-feedback" id="modalFeedback"></p>
+      </div>
+    </div>
+
+    <script>
+      let novaFotoBase64 = null;
+      let atividadesAtuais = [];
+
+      let novaCapaBase64 = null;
+      const capaPrincipal = document.querySelector(".perfil-capa img");
+
+      const overlay = document.getElementById("modalOverlay");
+      const btnAbrir = document.getElementById("btnAbrirModal");
+      const btnFechar = document.getElementById("btnFecharModal");
+      const btnCancelar = document.getElementById("btnCancelar");
+      const btnSalvar = document.getElementById("btnSalvar");
+      const inputNome = document.getElementById("inputNome");
+      const inputBio = document.getElementById("inputBio");
+      const inputFoto = document.getElementById("inputFoto");
+      const inputUsuario = document.getElementById("inputUsuario");
+      const btnTrocarFoto = document.getElementById("btnTrocarFoto");
+      const modalPreview = document.getElementById("modalAvatarPreview");
+      const avatarPrincipal = document.getElementById("avatarPrincipal");
+      const tagsContainer = document.getElementById("tagsContainer");
+      const inputTag = document.getElementById("inputTag");
+      const btnAddTag = document.getElementById("btnAddTag");
+      const feedback = document.getElementById("modalFeedback");
+      const inputCapa = document.getElementById("inputCapa");
+      const btnTrocarCapa = document.getElementById("btnTrocarCapa");
+      const modalCapaImg = document.getElementById("modalCapaImg");
+
+      btnAbrir.addEventListener("click", () => {
+        inputNome.value = document
+          .querySelector(".perfil-nome")
+          .textContent.trim();
+        inputBio.value = document
+          .querySelector(".perfil-bio")
+          .textContent.trim();
+        inputUsuario.value = document.querySelector(".perfil-usuario").textContent.replace("@", "").trim();
+        modalPreview.src = avatarPrincipal.src;
+        novaFotoBase64 = null;
+        feedback.textContent = "";
+        feedback.className = "modal-feedback";
+        renderTags();
+        overlay.classList.add("aberto");
+        inputNome.focus();
+        modalCapaImg.src = capaPrincipal.src;
+        novaCapaBase64 = null;
+      });
+
+
+      function fecharModal() {
+        overlay.classList.remove("aberto");
+      }
+      btnFechar.addEventListener("click", fecharModal);
+      btnCancelar.addEventListener("click", fecharModal);
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) fecharModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") fecharModal();
+      });
+
+
+      btnTrocarFoto.addEventListener("click", () => inputFoto.click());
+      inputFoto.addEventListener("change", () => {
+        const file = inputFoto.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          novaFotoBase64 = e.target.result;
+          modalPreview.src = novaFotoBase64;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      btnTrocarCapa.addEventListener("click", () => inputCapa.click());
+      inputCapa.addEventListener("change", () => {
+        const file = inputCapa.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          novaCapaBase64 = e.target.result;
+          modalCapaImg.src = novaCapaBase64;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      function renderTags() {
+        tagsContainer.innerHTML = "";
+        atividadesAtuais.forEach((ativ, idx) => {
+          const tag = document.createElement("span");
+          tag.className = "tag";
+          tag.innerHTML = `${ativ} <button aria-label="Remover ${ativ}">✕</button>`;
+          tag.querySelector("button").addEventListener("click", () => {
+            atividadesAtuais.splice(idx, 1);
+            renderTags();
+          });
+          tagsContainer.appendChild(tag);
         });
+      }
 
-        console.log("Status da resposta do servidor:", resposta.status);
-
-        if (resposta.status === 401) {
-          console.warn("Não autenticado! Redirecionando para o login...");
-          window.location.href = "login.html";
+      function adicionarTag() {
+        const valor = inputTag.value.trim();
+        if (!valor) return;
+        if (atividadesAtuais.includes(valor)) {
+          inputTag.value = "";
           return;
         }
-
-        if (!resposta.ok) {
-          throw new Error(`Erro no servidor: Código ${resposta.status}`);
-        }
-
-        const usuario = await resposta.json();
-        console.log("Usuário carregado com sucesso:", usuario);
-
-        document.querySelector(".perfil-nome").textContent = usuario.nome;
-        document.querySelector(".perfil-usuario").textContent =
-          "@" + usuario.usuario;
-
-        if (usuario.bio) {
-          document.querySelector(".perfil-bio").textContent = usuario.bio;
-        }
-      } catch (err) {
-        console.error("Erro capturado no catch:", err);
-        alert("Erro ao carregar perfil. Verifique o console do desenvolvedor.");
-        // Comentei a linha abaixo temporariamente para a página NÃO sumir antes de você ver o erro no console!
-        // window.location.href = 'login.html';
+        atividadesAtuais.push(valor);
+        inputTag.value = "";
+        renderTags();
       }
+
+      btnAddTag.addEventListener("click", adicionarTag);
+      inputTag.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          adicionarTag();
+        }
+      });
+
+      btnSalvar.addEventListener("click", async () => {
+  const nome = inputNome.value.trim();
+  const bio = inputBio.value.trim();
+
+  if (!nome) {
+    mostrarFeedback("O nome não pode ficar vazio.", true);
+    return;
+  }
+
+  btnSalvar.disabled = true;
+  btnSalvar.textContent = "Salvando...";
+  feedback.textContent = "";
+
+  const payload = { nome, bio, atividades: atividadesAtuais };
+  if (novaFotoBase64) payload.foto = novaFotoBase64;
+  if (novaCapaBase64) payload.capa = novaCapaBase64;
+  if (inputUsuario.value.trim()) payload.usuario = inputUsuario.value.trim();
+
+  try {
+    const resp = await fetch("http://localhost:3000/api/me", {
+      method: "PUT",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!resp.ok) {
+      const data = await resp.json();
+      mostrarFeedback(data.erro || "Erro ao salvar.", true);
+      return;
     }
 
-    carregarPerfil();
-  </script>
+    document.querySelector(".perfil-nome").textContent = nome;
+    document.querySelector(".perfil-bio").textContent = bio;
+    document.querySelector(".perfil-usuario").textContent =
+      "@" + inputUsuario.value.replace(/@+/, "").trim();
+
+    if (novaFotoBase64) avatarPrincipal.src = novaFotoBase64;
+    if (novaCapaBase64) capaPrincipal.src = novaCapaBase64;
+
+    if (atividadesAtuais.length > 0) {
+      document.getElementById("perfilAtividades").textContent =
+        "🎨 " + atividadesAtuais.join(" · ");
+    }
+
+    mostrarFeedback("Perfil atualizado com sucesso! ✓");
+    setTimeout(fecharModal, 1200);
+
+  } catch (err) {
+    console.error(err);
+    mostrarFeedback("Erro ao salvar. Tente novamente.", true);
+  } finally {
+    btnSalvar.disabled = false;
+    btnSalvar.textContent = "Salvar";
+  }
+});
+
+      function mostrarFeedback(msg, erro = false) {
+        feedback.textContent = msg;
+        feedback.className = "modal-feedback" + (erro ? " erro" : "");
+      }
+
+      async function carregarPerfil() {
+        try {
+          const resposta = await fetch("http://localhost:3000/api/me", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (resposta.status === 401) {
+            window.location.href = "login.html";
+            return;
+          }
+          if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+
+          const usuario = await resposta.json();
+
+          document.querySelector(".perfil-nome").textContent = usuario.nome;
+          document.querySelector(".perfil-usuario").textContent =
+            "@" + usuario.usuario;
+
+          if (usuario.bio) {
+            document.querySelector(".perfil-bio").textContent = usuario.bio;
+          }
+
+          if (usuario.foto) {
+            avatarPrincipal.src = usuario.foto;
+          }
+
+          if (usuario.capa) {
+            capaPrincipal.src = usuario.capa;
+          }
+
+          if (usuario.atividades && usuario.atividades.length > 0) {
+            atividadesAtuais = [...usuario.atividades];
+            document.getElementById("perfilAtividades").textContent =
+              "🎨 " + atividadesAtuais.join(" · ");
+          }
+        } catch (err) {
+          console.error("Erro ao carregar perfil:", err);
+        }
+      }
+
+      carregarPerfil();
+    </script>
+  </body>
 </html>
