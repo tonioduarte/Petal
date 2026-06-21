@@ -20,7 +20,6 @@
     <title>Perfil • Petal</title>
 
     <style>
-  
       .modal-overlay {
         display: none;
         position: fixed;
@@ -359,68 +358,70 @@
         </div>
 
         <div class="perfil-abas">
-          <button class="aba-btn ativa">Artes</button>
-          <button class="aba-btn">Coleções</button>
-          <button class="aba-btn">Sobre</button>
+          <button class="aba-btn ativa" data-aba="publicacoes">
+            Publicações
+          </button>
+          <button class="aba-btn" data-aba="colecoes">Coleções</button>
+          <button class="aba-btn" data-aba="sobre">Sobre</button>
         </div>
       </section>
 
       <section class="perfil-conteudo">
-        <div class="grid-artes">
-          <article class="arte-card">
-            <div class="arte-thumb">
-              <img src="../assets/img/gato.png" alt="Arte 1" />
+        <!-- ABA ARTES -->
+        <div id="abaPublicacoes">
+          <div class="pub-header">
+            <button class="btn-nova-pub" id="btnNovaPub">
+              + Nova publicação
+            </button>
+          </div>
+          <div class="feed-posts" id="feedPosts"></div>
+        </div>
+
+        <!-- MODAL NOVA PUBLICAÇÃO -->
+        <div class="modal-overlay" id="modalPubOverlay">
+          <div class="modal" role="dialog">
+            <button class="modal-fechar" id="btnFecharPub">✕</button>
+            <h2>Nova publicação</h2>
+
+            <div class="pub-imagem-area" id="pubImagemArea">
+              <img id="pubImagemPreview" src="" alt="" style="display: none" />
+              <button class="btn-add-imagem-pub" id="btnAddImagemPub">
+                📷 Adicionar imagem
+              </button>
+              <input type="file" id="inputImagemPub" accept="image/*" />
             </div>
-            <div class="arte-info">
-              <h3>Entre Folhas</h3>
-              <p>Ilustração digital · 2024</p>
+
+            <div class="modal-campo">
+              <label for="inputLegendaPub">Legenda</label>
+              <textarea
+                id="inputLegendaPub"
+                rows="4"
+                placeholder="O que você quer compartilhar?"
+                maxlength="500"
+              ></textarea>
             </div>
-          </article>
-          <article class="arte-card">
-            <div class="arte-thumb">
-              <img src="../assets/img/crochet.png" alt="Arte 2" />
+
+            <div class="modal-acoes">
+              <button class="btn-cancelar" id="btnCancelarPub">Cancelar</button>
+              <button class="btn-salvar" id="btnPublicar">Publicar</button>
             </div>
-            <div class="arte-info">
-              <h3>Texturas do Tempo</h3>
-              <p>Fotografia · 2023</p>
-            </div>
-          </article>
-          <article class="arte-card">
-            <div class="arte-thumb">
-              <img src="../assets/img/pintura.png" alt="Arte 3" />
-            </div>
-            <div class="arte-info">
-              <h3>Luz Sobre a Tela</h3>
-              <p>Pintura em tela · 2023</p>
-            </div>
-          </article>
-          <article class="arte-card">
-            <div class="arte-thumb">
-              <img src="../assets/img/filme.png" alt="Arte 4" />
-            </div>
-            <div class="arte-info">
-              <h3>Frames de Memória</h3>
-              <p>Filme analógico · 2022</p>
-            </div>
-          </article>
-          <article class="arte-card">
-            <div class="arte-thumb">
-              <img src="../assets/img/gato-box.png" alt="Arte 5" />
-            </div>
-            <div class="arte-info">
-              <h3>No Jardim</h3>
-              <p>Estudo de personagem · 2024</p>
-            </div>
-          </article>
-          <article class="arte-card">
-            <div class="arte-thumb">
-              <img src="../assets/img/pintura-box.jpg" alt="Arte 6" />
-            </div>
-            <div class="arte-info">
-              <h3>Horizontes</h3>
-              <p>Pintura digital · 2024</p>
-            </div>
-          </article>
+            <p class="modal-feedback" id="feedbackPub"></p>
+          </div>
+        </div>
+
+        <!-- ABA COLEÇÕES -->
+        <div id="abaColecoes" style="display: none">
+          <div class="colecoes-header">
+            <button class="btn-nova-colecao" id="btnNovaColecao">
+              + Nova coleção
+            </button>
+          </div>
+          <div class="grid-colecoes" id="gridColecoes"></div>
+        </div>
+
+        <!-- ABA SOBRE -->
+        <div id="abaSobre" style="display: none">
+          <p class="sobre-texto" id="sobreTexto"></p>
         </div>
       </section>
     </main>
@@ -515,6 +516,84 @@
       </div>
     </div>
 
+    <!-- MODAL VISUALIZAR COLEÇÃO -->
+    <div class="modal-overlay" id="modalVerColecaoOverlay">
+      <div class="modal modal-grande" role="dialog">
+        <button class="modal-fechar" id="btnFecharVerColecao">✕</button>
+        <div class="modal-ver-header">
+          <div>
+            <h2 id="verColecaoNome"></h2>
+            <p id="verColecaoDesc"></p>
+          </div>
+          <button class="btn-editar-colecao" id="btnEditarColecao">
+            ✏️ Editar
+          </button>
+        </div>
+        <div class="ver-fotos-grid" id="verFotosGrid"></div>
+        <p class="ver-sem-fotos" id="verSemFotos" style="display: none">
+          Essa coleção ainda não tem fotos.
+        </p>
+      </div>
+    </div>
+
+    <!-- MODAL EDITAR COLEÇÃO -->
+    <div class="modal-overlay" id="modalColecaoOverlay">
+      <div class="modal" role="dialog">
+        <button class="modal-fechar" id="btnFecharColecao">✕</button>
+        <h2 id="modalColecaoTitulo">Nova coleção</h2>
+
+        <div class="modal-campo">
+          <label for="inputNomeColecao">Nome da coleção</label>
+          <input
+            type="text"
+            id="inputNomeColecao"
+            placeholder="Ex: Aquarelas de 2024"
+            maxlength="60"
+          />
+        </div>
+
+        <div class="modal-campo">
+          <label for="inputDescColecao">Descrição (opcional)</label>
+          <textarea
+            id="inputDescColecao"
+            rows="2"
+            placeholder="Sobre essa coleção..."
+            maxlength="200"
+          ></textarea>
+        </div>
+
+        <div id="secaoFotosColecao" style="display: none">
+          <label
+            style="
+              font-size: 0.82em;
+              font-weight: 500;
+              color: #603314;
+              display: block;
+              margin-bottom: 8px;
+            "
+            >Fotos</label
+          >
+          <div class="modal-fotos-grid" id="modalFotosGrid"></div>
+          <button class="btn-add-foto-colecao" id="btnAddFotoColecao">
+            📷 Adicionar foto
+          </button>
+          <input type="file" id="inputFotoColecao" accept="image/*" />
+        </div>
+
+        <div class="modal-acoes">
+          <button class="btn-cancelar" id="btnCancelarColecao">Cancelar</button>
+          <button class="btn-salvar" id="btnSalvarColecao">Criar</button>
+        </div>
+        <p class="modal-feedback" id="feedbackColecao"></p>
+      </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+      <button class="lightbox-fechar" id="btnFecharLightbox">✕</button>
+      <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+    </div>
+
     <script>
       let novaFotoBase64 = null;
       let atividadesAtuais = [];
@@ -549,7 +628,10 @@
         inputBio.value = document
           .querySelector(".perfil-bio")
           .textContent.trim();
-        inputUsuario.value = document.querySelector(".perfil-usuario").textContent.replace("@", "").trim();
+        inputUsuario.value = document
+          .querySelector(".perfil-usuario")
+          .textContent.replace("@", "")
+          .trim();
         modalPreview.src = avatarPrincipal.src;
         novaFotoBase64 = null;
         feedback.textContent = "";
@@ -560,7 +642,6 @@
         modalCapaImg.src = capaPrincipal.src;
         novaCapaBase64 = null;
       });
-
 
       function fecharModal() {
         overlay.classList.remove("aberto");
@@ -573,7 +654,6 @@
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") fecharModal();
       });
-
 
       btnTrocarFoto.addEventListener("click", () => inputFoto.click());
       inputFoto.addEventListener("change", () => {
@@ -634,61 +714,61 @@
       });
 
       btnSalvar.addEventListener("click", async () => {
-  const nome = inputNome.value.trim();
-  const bio = inputBio.value.trim();
+        const nome = inputNome.value.trim();
+        const bio = inputBio.value.trim();
 
-  if (!nome) {
-    mostrarFeedback("O nome não pode ficar vazio.", true);
-    return;
-  }
+        if (!nome) {
+          mostrarFeedback("O nome não pode ficar vazio.", true);
+          return;
+        }
 
-  btnSalvar.disabled = true;
-  btnSalvar.textContent = "Salvando...";
-  feedback.textContent = "";
+        btnSalvar.disabled = true;
+        btnSalvar.textContent = "Salvando...";
+        feedback.textContent = "";
 
-  const payload = { nome, bio, atividades: atividadesAtuais };
-  if (novaFotoBase64) payload.foto = novaFotoBase64;
-  if (novaCapaBase64) payload.capa = novaCapaBase64;
-  if (inputUsuario.value.trim()) payload.usuario = inputUsuario.value.trim();
+        const payload = { nome, bio, atividades: atividadesAtuais };
+        if (novaFotoBase64) payload.foto = novaFotoBase64;
+        if (novaCapaBase64) payload.capa = novaCapaBase64;
+        if (inputUsuario.value.trim())
+          payload.usuario = inputUsuario.value.trim();
 
-  try {
-    const resp = await fetch("http://localhost:3000/api/me", {
-      method: "PUT",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+        try {
+          const resp = await fetch("http://localhost:3000/api/me", {
+            method: "PUT",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
 
-    if (!resp.ok) {
-      const data = await resp.json();
-      mostrarFeedback(data.erro || "Erro ao salvar.", true);
-      return;
-    }
+          if (!resp.ok) {
+            const data = await resp.json();
+            mostrarFeedback(data.erro || "Erro ao salvar.", true);
+            return;
+          }
 
-    document.querySelector(".perfil-nome").textContent = nome;
-    document.querySelector(".perfil-bio").textContent = bio;
-    document.querySelector(".perfil-usuario").textContent =
-      "@" + inputUsuario.value.replace(/@+/, "").trim();
+          document.querySelector(".perfil-nome").textContent = nome;
+          document.querySelector(".perfil-bio").textContent = bio;
+          document.querySelector(".perfil-usuario").textContent =
+            "@" + inputUsuario.value.replace(/@+/, "").trim();
 
-    if (novaFotoBase64) avatarPrincipal.src = novaFotoBase64;
-    if (novaCapaBase64) capaPrincipal.src = novaCapaBase64;
+          if (novaFotoBase64) avatarPrincipal.src = novaFotoBase64;
+          if (novaCapaBase64) capaPrincipal.src = novaCapaBase64;
 
-    if (atividadesAtuais.length > 0) {
-      document.getElementById("perfilAtividades").textContent =
-        "🎨 " + atividadesAtuais.join(" · ");
-    }
+          if (atividadesAtuais.length > 0) {
+            document.getElementById("perfilAtividades").textContent =
+              "🎨 " + atividadesAtuais.join(" · ");
+          }
 
-    mostrarFeedback("Perfil atualizado com sucesso! ✓");
-    setTimeout(fecharModal, 1200);
-
-  } catch (err) {
-    console.error(err);
-    mostrarFeedback("Erro ao salvar. Tente novamente.", true);
-  } finally {
-    btnSalvar.disabled = false;
-    btnSalvar.textContent = "Salvar";
-  }
-});
+          mostrarFeedback("Perfil atualizado com sucesso! ✓");
+          setTimeout(fecharModal, 1200);
+        } catch (err) {
+          console.error(err);
+          mostrarFeedback("Erro ao salvar. Tente novamente.", true);
+        } finally {
+          btnSalvar.disabled = false;
+          btnSalvar.textContent = "Salvar";
+        }
+      });
 
       function mostrarFeedback(msg, erro = false) {
         feedback.textContent = msg;
@@ -736,7 +816,512 @@
         }
       }
 
+      // ── ABAS ──
+      document.querySelectorAll(".aba-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".aba-btn")
+            .forEach((b) => b.classList.remove("ativa"));
+          btn.classList.add("ativa");
+
+          document.getElementById("abaPublicacoes").style.display = "none";
+          document.getElementById("abaColecoes").style.display = "none";
+          document.getElementById("abaSobre").style.display = "none";
+
+          const aba = btn.dataset.aba;
+          if (aba === "publicacoes") {
+            document.getElementById("abaPublicacoes").style.display = "block";
+            carregarPosts();
+          }
+          if (aba === "colecoes") {
+            document.getElementById("abaColecoes").style.display = "block";
+            carregarColecoes();
+          }
+          if (aba === "sobre") {
+            document.getElementById("abaSobre").style.display = "block";
+            document.getElementById("sobreTexto").textContent = document
+              .querySelector(".perfil-bio")
+              .textContent.trim();
+          }
+        });
+      });
+
+      // ── PUBLICAÇÕES ──
+      let imagemPubBase64 = null;
+
+      const overlayPub = document.getElementById("modalPubOverlay");
+      const btnNovaPub = document.getElementById("btnNovaPub");
+      const btnFecharPub = document.getElementById("btnFecharPub");
+      const btnCancelarPub = document.getElementById("btnCancelarPub");
+      const btnPublicar = document.getElementById("btnPublicar");
+      const inputLegenda = document.getElementById("inputLegendaPub");
+      const feedbackPub = document.getElementById("feedbackPub");
+      const pubImagemPreview = document.getElementById("pubImagemPreview");
+      const btnAddImagem = document.getElementById("btnAddImagemPub");
+      const inputImagemPub = document.getElementById("inputImagemPub");
+
+      function abrirModalPub() {
+        imagemPubBase64 = null;
+        inputLegenda.value = "";
+        pubImagemPreview.style.display = "none";
+        pubImagemPreview.src = "";
+        feedbackPub.textContent = "";
+        overlayPub.classList.add("aberto");
+      }
+
+      function fecharModalPub() {
+        overlayPub.classList.remove("aberto");
+      }
+
+      btnNovaPub.addEventListener("click", abrirModalPub);
+      btnFecharPub.addEventListener("click", fecharModalPub);
+      btnCancelarPub.addEventListener("click", fecharModalPub);
+      overlayPub.addEventListener("click", (e) => {
+        if (e.target === overlayPub) fecharModalPub();
+      });
+
+      btnAddImagem.addEventListener("click", () => inputImagemPub.click());
+      inputImagemPub.addEventListener("change", () => {
+        const file = inputImagemPub.files[0];
+        if (!file) return;
+
+        if (file.size > 10 * 1024 * 1024) {
+          feedbackPub.textContent = "A imagem deve ter no máximo 10MB.";
+          feedbackPub.className = "modal-feedback erro";
+          inputImagemPub.value = "";
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          imagemPubBase64 = e.target.result;
+          pubImagemPreview.src = imagemPubBase64;
+          pubImagemPreview.style.display = "block";
+          btnAddImagem.textContent = "📷 Trocar imagem";
+        };
+        reader.readAsDataURL(file);
+        inputImagemPub.value = "";
+      });
+
+      btnPublicar.addEventListener("click", async () => {
+        const legenda = inputLegenda.value.trim();
+
+        if (!legenda && !imagemPubBase64) {
+          feedbackPub.textContent = "Adicione uma imagem ou escreva algo.";
+          feedbackPub.className = "modal-feedback erro";
+          return;
+        }
+
+        btnPublicar.disabled = true;
+        btnPublicar.textContent = "Publicando...";
+
+        try {
+          const resp = await fetch("http://localhost:3000/api/posts", {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ legenda, imagem: imagemPubBase64 }),
+          });
+
+          if (!resp.ok) {
+            const err = await resp.json();
+            feedbackPub.textContent = err.erro || "Erro ao publicar.";
+            feedbackPub.className = "modal-feedback erro";
+            return;
+          }
+
+          fecharModalPub();
+          carregarPosts();
+        } catch (err) {
+          feedbackPub.textContent = "Erro ao publicar. Tente novamente.";
+          feedbackPub.className = "modal-feedback erro";
+        } finally {
+          btnPublicar.disabled = false;
+          btnPublicar.textContent = "Publicar";
+        }
+      });
+
+      function formatarData(dataStr) {
+        const data = new Date(dataStr);
+        return data.toLocaleDateString("pt-BR", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      }
+
+      async function carregarPosts() {
+        const meResp = await fetch("http://localhost:3000/api/me", {
+          credentials: "include",
+        });
+        const me = await meResp.json();
+
+        const resp = await fetch(
+          `http://localhost:3000/api/posts/usuario/${me.id}`,
+          { credentials: "include" },
+        );
+        if (!resp.ok) return;
+        const posts = await resp.json();
+
+        const feed = document.getElementById("feedPosts");
+        feed.innerHTML = "";
+
+        if (posts.length === 0) {
+          feed.innerHTML = `<p class="post-vazio">Nenhuma publicação ainda. Que tal compartilhar algo?</p>`;
+          return;
+        }
+
+        posts.forEach((post) => {
+          const card = document.createElement("div");
+          card.className = "post-card";
+
+          const avatarSrc =
+            post.autor_foto || "../assets/img/perfil-avatar.jpg";
+
+          card.innerHTML = `
+      <div class="post-header">
+        <div class="post-autor">
+          <img class="post-autor-avatar" src="${avatarSrc}" alt="${post.autor_nome}" />
+          <div class="post-autor-info">
+            <strong>${post.autor_nome}</strong>
+            <span>@${post.autor_usuario} · ${formatarData(post.created_at)}</span>
+          </div>
+        </div>
+        <button class="btn-deletar-post" title="Deletar post" data-id="${post.id}">🗑</button>
+      </div>
+      ${post.imagem ? `<div class="post-imagem"><img src="${post.imagem}" alt="imagem do post" /></div>` : ""}
+      ${post.legenda ? `<p class="post-legenda">${post.legenda}</p>` : ""}
+    `;
+
+          card
+            .querySelector(".btn-deletar-post")
+            .addEventListener("click", async () => {
+              if (!confirm("Deletar essa publicação?")) return;
+              await fetch(`http://localhost:3000/api/posts/${post.id}`, {
+                method: "DELETE",
+                credentials: "include",
+              });
+              carregarPosts();
+            });
+
+          if (post.imagem) {
+            card
+              .querySelector(".post-imagem img")
+              .addEventListener("click", () => {
+                abrirLightbox(post.imagem, post.legenda || "");
+              });
+          }
+
+          feed.appendChild(card);
+        });
+      }
+
+      // ── COLEÇÕES ──
+      let colecaoAtualId = null;
+      let colecaoAtualDados = null;
+
+      // elementos modal editar
+      const overlayColecao = document.getElementById("modalColecaoOverlay");
+      const btnNovaColecao = document.getElementById("btnNovaColecao");
+      const btnFecharColecao = document.getElementById("btnFecharColecao");
+      const btnCancelarColecao = document.getElementById("btnCancelarColecao");
+      const btnSalvarColecao = document.getElementById("btnSalvarColecao");
+      const inputNomeColecao = document.getElementById("inputNomeColecao");
+      const inputDescColecao = document.getElementById("inputDescColecao");
+      const feedbackColecao = document.getElementById("feedbackColecao");
+      const modalFotosGrid = document.getElementById("modalFotosGrid");
+      const btnAddFotoColecao = document.getElementById("btnAddFotoColecao");
+      const inputFotoColecao = document.getElementById("inputFotoColecao");
+      const secaoFotos = document.getElementById("secaoFotosColecao");
+
+      // elementos modal visualizar
+      const overlayVerColecao = document.getElementById(
+        "modalVerColecaoOverlay",
+      );
+      const btnFecharVer = document.getElementById("btnFecharVerColecao");
+      const btnEditarColecao = document.getElementById("btnEditarColecao");
+      const verColecaoNome = document.getElementById("verColecaoNome");
+      const verColecaoDesc = document.getElementById("verColecaoDesc");
+      const verFotosGrid = document.getElementById("verFotosGrid");
+      const verSemFotos = document.getElementById("verSemFotos");
+
+      /* ── VISUALIZAR ── */
+      function abrirModalVerColecao(colecao) {
+        colecaoAtualDados = colecao;
+        colecaoAtualId = colecao.id;
+        verColecaoNome.textContent = colecao.nome;
+        verColecaoDesc.textContent = colecao.descricao || "";
+        renderFotosVer(colecao.fotos || []);
+        overlayVerColecao.classList.add("aberto");
+      }
+
+      function fecharModalVerColecao() {
+        overlayVerColecao.classList.remove("aberto");
+      }
+
+      function renderFotosVer(fotos) {
+        verFotosGrid.innerHTML = "";
+        if (fotos.length === 0) {
+          verSemFotos.style.display = "block";
+          return;
+        }
+        verSemFotos.style.display = "none";
+        fotos.forEach((f) => {
+          const div = document.createElement("div");
+          div.className = "ver-foto-item";
+          div.innerHTML = `<img src="${f.foto}" alt="${f.titulo || ""}" style="cursor:zoom-in;" />`;
+          div.querySelector("img").addEventListener("click", () => {
+            abrirLightbox(f.foto, f.titulo || "");
+          });
+          verFotosGrid.appendChild(div);
+        });
+      }
+
+      btnFecharVer.addEventListener("click", fecharModalVerColecao);
+      overlayVerColecao.addEventListener("click", (e) => {
+        if (e.target === overlayVerColecao) fecharModalVerColecao();
+      });
+
+      btnEditarColecao.addEventListener("click", () => {
+        fecharModalVerColecao();
+        abrirModalEditarColecao(colecaoAtualDados);
+      });
+
+      /* ── EDITAR / CRIAR ── */
+      function abrirModalNovaColecao() {
+        colecaoAtualId = null;
+        colecaoAtualDados = null;
+        inputNomeColecao.value = "";
+        inputDescColecao.value = "";
+        secaoFotos.style.display = "none";
+        feedbackColecao.textContent = "";
+        document.getElementById("modalColecaoTitulo").textContent =
+          "Nova coleção";
+        btnSalvarColecao.textContent = "Criar";
+        overlayColecao.classList.add("aberto");
+      }
+
+      function abrirModalEditarColecao(colecao) {
+        colecaoAtualId = colecao.id;
+        colecaoAtualDados = colecao;
+        inputNomeColecao.value = colecao.nome;
+        inputDescColecao.value = colecao.descricao || "";
+        secaoFotos.style.display = "block";
+        feedbackColecao.textContent = "";
+        document.getElementById("modalColecaoTitulo").textContent =
+          colecao.nome;
+        btnSalvarColecao.textContent = "Salvar";
+        renderFotosModal(colecao.fotos || []);
+        overlayColecao.classList.add("aberto");
+      }
+
+      function fecharModalColecao() {
+        overlayColecao.classList.remove("aberto");
+        carregarColecoes();
+      }
+
+      btnNovaColecao.addEventListener("click", abrirModalNovaColecao);
+      btnFecharColecao.addEventListener("click", fecharModalColecao);
+      btnCancelarColecao.addEventListener("click", fecharModalColecao);
+      overlayColecao.addEventListener("click", (e) => {
+        if (e.target === overlayColecao) fecharModalColecao();
+      });
+
+      function renderFotosModal(fotos) {
+        modalFotosGrid.innerHTML = "";
+        fotos.forEach((f) => {
+          const div = document.createElement("div");
+          div.className = "modal-foto-item";
+          div.innerHTML = `
+      <img src="${f.foto}" alt="${f.titulo || ""}" />
+      <button class="btn-remover-foto" data-id="${f.id}">✕</button>
+    `;
+          div
+            .querySelector(".btn-remover-foto")
+            .addEventListener("click", async () => {
+              await fetch(
+                `http://localhost:3000/api/colecoes/${colecaoAtualId}/fotos/${f.id}`,
+                {
+                  method: "DELETE",
+                  credentials: "include",
+                },
+              );
+              const resp = await fetch("http://localhost:3000/api/colecoes", {
+                credentials: "include",
+              });
+              const cols = await resp.json();
+              const col = cols.find((c) => c.id === colecaoAtualId);
+              if (col) {
+                colecaoAtualDados = col;
+                renderFotosModal(col.fotos);
+              }
+            });
+          modalFotosGrid.appendChild(div);
+        });
+      }
+
+      btnAddFotoColecao.addEventListener("click", () =>
+        inputFotoColecao.click(),
+      );
+      inputFotoColecao.addEventListener("change", async () => {
+        const file = inputFotoColecao.files[0];
+        if (!file) return;
+
+        if (file.size > 10 * 1024 * 1024) {
+          feedbackColecao.textContent = "A foto deve ter no máximo 10MB.";
+          feedbackColecao.className = "modal-feedback erro";
+          inputFotoColecao.value = "";
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const resp = await fetch(
+            `http://localhost:3000/api/colecoes/${colecaoAtualId}/fotos`,
+            {
+              method: "POST",
+              credentials: "include",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ foto: e.target.result }),
+            },
+          );
+          if (resp.ok) {
+            const r2 = await fetch("http://localhost:3000/api/colecoes", {
+              credentials: "include",
+            });
+            const cols = await r2.json();
+            const col = cols.find((c) => c.id === colecaoAtualId);
+            if (col) {
+              colecaoAtualDados = col;
+              renderFotosModal(col.fotos);
+            }
+          }
+          inputFotoColecao.value = "";
+        };
+        reader.readAsDataURL(file);
+      });
+
+      btnSalvarColecao.addEventListener("click", async () => {
+        const nome = inputNomeColecao.value.trim();
+        if (!nome) {
+          feedbackColecao.textContent = "O nome é obrigatório.";
+          feedbackColecao.className = "modal-feedback erro";
+          return;
+        }
+
+        if (colecaoAtualId) {
+          fecharModalColecao();
+          return;
+        }
+
+        const resp = await fetch("http://localhost:3000/api/colecoes", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome,
+            descricao: inputDescColecao.value.trim(),
+          }),
+        });
+
+        if (resp.ok) {
+          const data = await resp.json();
+          colecaoAtualId = data.id;
+          colecaoAtualDados = {
+            id: data.id,
+            nome,
+            descricao: inputDescColecao.value.trim(),
+            fotos: [],
+          };
+          secaoFotos.style.display = "block";
+          document.getElementById("modalColecaoTitulo").textContent = nome;
+          btnSalvarColecao.textContent = "Salvar";
+          feedbackColecao.textContent = "Coleção criada! Agora adicione fotos.";
+          feedbackColecao.className = "modal-feedback";
+          carregarColecoes();
+        } else {
+          const err = await resp.json();
+          feedbackColecao.textContent = err.erro || "Erro ao criar coleção.";
+          feedbackColecao.className = "modal-feedback erro";
+        }
+      });
+
+      async function carregarColecoes() {
+        const resp = await fetch("http://localhost:3000/api/colecoes", {
+          credentials: "include",
+        });
+        if (!resp.ok) return;
+        const colecoes = await resp.json();
+        const grid = document.getElementById("gridColecoes");
+        grid.innerHTML = "";
+
+        colecoes.forEach((col) => {
+          const card = document.createElement("div");
+          card.className = "colecao-card";
+
+          const thumb =
+            col.fotos && col.fotos.length > 0
+              ? `<img src="${col.fotos[0].foto}" alt="${col.nome}" />`
+              : `<div style="height:150px;display:flex;align-items:center;justify-content:center;color:#a07850;font-size:0.85em;">Sem fotos</div>`;
+
+          card.innerHTML = `
+      <div class="colecao-thumb">${thumb}</div>
+      <div class="colecao-info">
+        <div>
+          <h3>${col.nome}</h3>
+          <span>${col.fotos ? col.fotos.length : 0} foto${col.fotos?.length !== 1 ? "s" : ""}</span>
+        </div>
+        <button class="btn-deletar-colecao" title="Deletar coleção">🗑</button>
+      </div>
+    `;
+
+          card.addEventListener("click", (e) => {
+            if (e.target.closest(".btn-deletar-colecao")) return;
+            abrirModalVerColecao(col);
+          });
+
+          card
+            .querySelector(".btn-deletar-colecao")
+            .addEventListener("click", async (e) => {
+              e.stopPropagation();
+              if (!confirm(`Deletar a coleção "${col.nome}"?`)) return;
+              await fetch(`http://localhost:3000/api/colecoes/${col.id}`, {
+                method: "DELETE",
+                credentials: "include",
+              });
+              carregarColecoes();
+            });
+
+          grid.appendChild(card);
+        });
+      }
+
+      // ── LIGHTBOX ──
+      const lightboxOverlay = document.getElementById("lightboxOverlay");
+      const lightboxImg = document.getElementById("lightboxImg");
+      const btnFecharLightbox = document.getElementById("btnFecharLightbox");
+
+      function abrirLightbox(src, alt) {
+        lightboxImg.src = src;
+        lightboxImg.alt = alt || "";
+        lightboxOverlay.classList.add("aberto");
+      }
+
+      function fecharLightbox() {
+        lightboxOverlay.classList.remove("aberto");
+        lightboxImg.src = "";
+      }
+
+      btnFecharLightbox.addEventListener("click", fecharLightbox);
+      lightboxOverlay.addEventListener("click", (e) => {
+        if (e.target === lightboxOverlay) fecharLightbox();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") fecharLightbox();
+      });
+
       carregarPerfil();
+      carregarPosts();
     </script>
   </body>
 </html>

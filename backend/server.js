@@ -213,7 +213,209 @@ app.put('/api/me', precisaEstarLogado, async (req, res) => {
   }
 });
 
+// Listar coleções do usuário logado
+app.get('/api/colecoes', precisaEstarLogado, async (req, res) => {
+  try {
+    const colecoes = await knex('colecoes')
+      .where({ usuario_id: req.session.userId })
+      .orderBy('created_at', 'desc');
 
+    for (const col of colecoes) {
+      const fotos = await knex('colecao_fotos')
+        .where({ colecao_id: col.id })
+        .orderBy('created_at', 'asc');
+      col.fotos = fotos;
+    }
+
+    res.json(colecoes);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao buscar coleções.' });
+  }
+});
+
+// Criar coleção
+app.post('/api/colecoes', precisaEstarLogado, async (req, res) => {
+  try {
+    const { nome, descricao } = req.body;
+    if (!nome || nome.trim() === '') {
+      return res.status(400).json({ erro: 'O nome da coleção é obrigatório.' });
+    }
+
+    const [id] = await knex('colecoes').insert({
+      usuario_id: req.session.userId,
+      nome: nome.trim(),
+      descricao: descricao ? descricao.trim() : null
+    });
+
+    res.status(201).json({ ok: true, id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao criar coleção.' });
+  }
+});
+
+// Deletar coleção
+app.delete('/api/colecoes/:id', precisaEstarLogado, async (req, res) => {
+  try {
+    const colecao = await knex('colecoes')
+      .where({ id: req.params.id, usuario_id: req.session.userId })
+      .first();
+
+    if (!colecao) return res.status(404).json({ erro: 'Coleção não encontrada.' });
+
+    await knex('colecoes').where({ id: req.params.id }).delete();
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao deletar coleção.' });
+  }
+});
+
+// Adicionar foto à coleção
+app.post('/api/colecoes/:id/fotos', precisaEstarLogado, async (req, res) => {
+  try {
+    const colecao = await knex('colecoes')
+      .where({ id: req.params.id, usuario_id: req.session.userId })
+      .first();
+
+    if (!colecao) return res.status(404).json({ erro: 'Coleção não encontrada.' });
+
+    const { foto, titulo } = req.body;
+    if (!foto) return res.status(400).json({ erro: 'Foto obrigatória.' });
+
+    const [id] = await knex('colecao_fotos').insert({
+      colecao_id: req.params.id,
+      foto,
+      titulo: titulo || null
+    });
+
+    res.status(201).json({ ok: true, id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao adicionar foto.' });
+  }
+});
+
+// Deletar foto da coleção
+app.delete('/api/colecoes/:colecaoId/fotos/:fotoId', precisaEstarLogado, async (req, res) => {
+  try {
+    const colecao = await knex('colecoes')
+      .where({ id: req.params.colecaoId, usuario_id: req.session.userId })
+      .first();
+
+    if (!colecao) return res.status(404).json({ erro: 'Coleção não encontrada.' });
+
+    await knex('colecao_fotos').where({ id: req.params.fotoId }).delete();
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao deletar foto.' });
+  }
+});
+
+// Listar posts (todos podem ver)
+app.get('/api/posts', async (req, res) => {
+  try {
+    const posts = await knex('posts')
+      .join('usuarios', 'posts.usuario_id', 'usuarios.id')
+      .select(
+        'posts.id',
+        'posts.legenda',
+        'posts.imagem',
+        'posts.created_at',
+        'usuarios.id as autor_id',
+        'usuarios.nome as autor_nome',
+        'usuarios.usuario as autor_usuario',
+        'usuarios.foto as autor_foto'
+      )
+      .orderBy('posts.created_at', 'desc');
+
+    res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao buscar posts.' });
+  }
+});
+
+// Listar posts de um usuário específico
+app.get('/api/posts/usuario/:id', async (req, res) => {
+  try {
+    const posts = await knex('posts')
+      .join('usuarios', 'posts.usuario_id', 'usuarios.id')
+      .select(
+        'posts.id',
+        'posts.legenda',
+        'posts.imagem',
+        'posts.created_at',
+        'usuarios.id as autor_id',
+        'usuarios.nome as autor_nome',
+        'usuarios.usuario as autor_usuario',
+        'usuarios.foto as autor_foto'
+      )
+      .where('posts.usuario_id', req.params.id)
+      .orderBy('posts.created_at', 'desc');
+
+    res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao buscar posts.' });
+  }
+});
+
+// Criar post
+app.post('/api/posts', precisaEstarLogado, async (req, res) => {
+  try {
+    const { legenda, imagem } = req.body;
+
+    if (!legenda && !imagem) {
+      return res.status(400).json({ erro: 'O post precisa ter texto ou imagem.' });
+    }
+
+    const [id] = await knex('posts').insert({
+      usuario_id: req.session.userId,
+      legenda: legenda || null,
+      imagem: imagem || null
+    });
+
+    const post = await knex('posts')
+      .join('usuarios', 'posts.usuario_id', 'usuarios.id')
+      .select(
+        'posts.id',
+        'posts.legenda',
+        'posts.imagem',
+        'posts.created_at',
+        'usuarios.id as autor_id',
+        'usuarios.nome as autor_nome',
+        'usuarios.usuario as autor_usuario',
+        'usuarios.foto as autor_foto'
+      )
+      .where('posts.id', id)
+      .first();
+
+    res.status(201).json({ ok: true, post });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao criar post.' });
+  }
+});
+
+// Deletar post
+app.delete('/api/posts/:id', precisaEstarLogado, async (req, res) => {
+  try {
+    const post = await knex('posts')
+      .where({ id: req.params.id, usuario_id: req.session.userId })
+      .first();
+
+    if (!post) return res.status(404).json({ erro: 'Post não encontrado.' });
+
+    await knex('posts').where({ id: req.params.id }).delete();
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao deletar post.' });
+  }
+});
 
 const PORT = process.env.PORT || 3000;
 
