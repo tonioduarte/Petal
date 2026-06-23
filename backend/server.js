@@ -417,6 +417,12 @@ app.delete('/api/posts/:id', precisaEstarLogado, async (req, res) => {
   }
 });
 
+app.post('/api/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.json({ ok: true });
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

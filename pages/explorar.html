@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="../assets/img/Petal-logo-bege.png" type="image/png" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/explorar.css" />
+    <title>Explorar • Petal</title>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="explorar.html">Explorar</a>
+        <a href="perfil.html">Meu perfil</a>
+        <a href="#" id="btnLogout">Sair</a>
+      </nav>
+      <div class="logo-header">
+        <img src="../assets/img/Petal-logo-bege.png" alt="logo" class="logo-img" />
+        <img src="../assets/img/Petal-nome-bege.png" alt="Petal" class="logo-text" />
+      </div>
+    </header>
+
+    <img src="../assets/img/folhas-dir.png" alt="" class="folhas-direita" />
+    <img src="../assets/img/folhas-esq.png" alt="" class="folhas-esquerda" />
+
+    <main class="explorar-container">
+      <h1 class="explorar-titulo">Explorar</h1>
+      <p class="explorar-subtitulo">Veja as publicações mais recentes da comunidade Petal</p>
+      <div class="feed-posts" id="feedPosts">
+        <p class="feed-loading">Carregando publicações...</p>
+      </div>
+    </main>
+
+    <div class="lightbox-overlay" id="lightboxOverlay">
+      <button class="lightbox-fechar" id="btnFecharLightbox">✕</button>
+      <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+    </div>
+
+    <script src="../js/explorar.js"></script>
+  </body>
+</html>
